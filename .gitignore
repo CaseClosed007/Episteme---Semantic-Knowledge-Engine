@@ -1,0 +1,69 @@
+cat > .gitignore << 'EOF'
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environment ───────────────────────────────────────────────────────
+backend/.venv/
+.venv/
+venv/
+env/
+
+# ── Environment variables (NEVER commit secrets) ──────────────────────────────
+backend/.env
+.env
+.env.local
+.env.production
+
+# ── FAISS index & embeddings (large binary files, regenerate locally) ─────────
+data/embeddings/
+*.index
+*.faiss
+
+# ── Downloaded datasets & processed data ─────────────────────────────────────
+data/raw/
+data/processed/
+
+# ── Model cache (HuggingFace downloads) ───────────────────────────────────────
+~/.cache/huggingface/
+.cache/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+backend/logs/
+*.log
+*.err
+
+# ── Frontend build output ─────────────────────────────────────────────────────
+frontend/dist/
+frontend/.vite-temp/
+
+# ── Node modules ──────────────────────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+
+# ── macOS system files ────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ── IDE files ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Pytest / coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
