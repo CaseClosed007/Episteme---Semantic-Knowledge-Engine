@@ -631,3 +631,13 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }
+
+/* Ensure the ForceGraph canvas receives all pointer events */
+.main-area canvas {
+  display: block;
+  cursor: grab;
+}
+
+.main-area canvas:active {
+  cursor: grabbing;
+}

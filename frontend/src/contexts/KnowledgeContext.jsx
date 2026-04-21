@@ -37,6 +37,9 @@ const initialState = {
   graphError: null,
   lastBuiltAt: null,
 
+  // Graph identity
+  graphName: "",             // display name for the current graph
+
   // Selection
   selectedNodeId: null,      // currently focused node id
   selectedNodeData: null,    // full node detail + subgraph from API
@@ -75,6 +78,7 @@ const A = {
   HEALTH_SUCCESS:     "HEALTH_SUCCESS",
   SELECT_NODE:        "SELECT_NODE",
   SET_SEARCH_QUERY:   "SET_SEARCH_QUERY",
+  SET_GRAPH_NAME:     "SET_GRAPH_NAME",
 };
 
 // ── Pure reducer ──────────────────────────────────────────────────────────────
@@ -114,7 +118,15 @@ function reducer(state, action) {
       return { ...state, ingestLoading: true, ingestError: null, ingestResult: null };
 
     case A.INGEST_SUCCESS:
-      return { ...state, ingestLoading: false, ingestResult: action.payload };
+      return {
+        ...state,
+        ingestLoading: false,
+        ingestResult: action.payload,
+        graphName: action.payload.source ?? state.graphName,
+      };
+
+    case A.SET_GRAPH_NAME:
+      return { ...state, graphName: action.payload };
 
     case A.INGEST_ERROR:
       return { ...state, ingestLoading: false, ingestError: action.payload };
@@ -205,13 +217,19 @@ export function KnowledgeProvider({ children }) {
     [fetchGraph]
   );
 
+  // ── Set graph name manually ─────────────────────────────────────────────────
+  const setGraphName = useCallback((name) => {
+    dispatch({ type: A.SET_GRAPH_NAME, payload: name });
+  }, []);
+
   // ── Ingest PDF ──────────────────────────────────────────────────────────────
   const ingestPDF = useCallback(
-    async (file) => {
+    async (file, displayName) => {
       dispatch({ type: A.INGEST_LOADING });
       const form = new FormData();
       form.append("file", file);
-      form.append("source", file.name);
+      // Use displayName as source if provided; falls back to raw filename
+      form.append("source", displayName || file.name);
       try {
         const res = await fetch(`${API}/api/ingest/pdf`, {
           method: "POST",
@@ -269,7 +287,7 @@ export function KnowledgeProvider({ children }) {
   // ── Derived data (memoised to avoid recalculation on every render) ───────────
   const derivedStats = useMemo(() => {
     if (!state.graph) return null;
-    const { nodes, links, stats } = state.graph;
+    const { nodes, stats } = state.graph;
     const sources = [...new Set(nodes.map((n) => n.source))];
     const clusterCount = stats?.clusters ?? 0;
     const avgPagerank =
@@ -308,6 +326,7 @@ export function KnowledgeProvider({ children }) {
       ingestPDF,
       search,
       checkHealth,
+      setGraphName,
     }),
     [
       state,
@@ -319,6 +338,7 @@ export function KnowledgeProvider({ children }) {
       ingestPDF,
       search,
       checkHealth,
+      setGraphName,
     ]
   );
 
