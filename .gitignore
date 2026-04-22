@@ -24,13 +24,17 @@ backend/.env
 .env.production
 
 # ── FAISS index & embeddings (large binary files, regenerate locally) ─────────
-data/embeddings/
+# Ignore contents but track the directory via .gitkeep
+data/embeddings/*
+!data/embeddings/.gitkeep
 *.index
 *.faiss
 
 # ── Downloaded datasets & processed data ─────────────────────────────────────
-data/raw/
-data/processed/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 
 # ── Model cache (HuggingFace downloads) ───────────────────────────────────────
 ~/.cache/huggingface/

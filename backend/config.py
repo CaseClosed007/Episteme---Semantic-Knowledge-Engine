@@ -7,8 +7,10 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Resolve project root (one level above this file)
-BASE_DIR = Path(__file__).parent
+# Resolve project root (one level above this file).
+# .resolve() converts to an absolute path so FAISS and mkdir() work
+# correctly regardless of the working directory when the backend is started.
+BASE_DIR = Path(__file__).resolve().parent
 ROOT_DIR = BASE_DIR.parent
 
 load_dotenv(BASE_DIR / ".env")
