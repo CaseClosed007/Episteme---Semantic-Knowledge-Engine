@@ -164,8 +164,8 @@ CHUNK_SIZE=512
 CHUNK_OVERLAP=64
 
 # ── FAISS Index ────────────────────────────────────────────────────────
-FAISS_INDEX_PATH=../data/embeddings/knowledge.index
-FAISS_META_PATH=../data/embeddings/metadata.json
+FAISS_INDEX_PATH=data/embeddings/knowledge.index
+FAISS_META_PATH=data/embeddings/metadata.json
 
 # ── LLM (Ollama) ────────────────────────────────────────────────────────
 OLLAMA_BASE_URL=http://localhost:11434

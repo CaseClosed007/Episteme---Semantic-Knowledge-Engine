@@ -35,12 +35,13 @@ class Config:
     CHUNK_OVERLAP: int = int(os.getenv("CHUNK_OVERLAP", 64))  # tokens
 
     # ── FAISS Persistence ──────────────────────────────────────────────────────
-    FAISS_INDEX_PATH: Path = ROOT_DIR / os.getenv(
+    # resolve() normalises any ../  that may come from a misconfigured .env
+    FAISS_INDEX_PATH: Path = (ROOT_DIR / os.getenv(
         "FAISS_INDEX_PATH", "data/embeddings/knowledge.index"
-    )
-    FAISS_META_PATH: Path = ROOT_DIR / os.getenv(
+    )).resolve()
+    FAISS_META_PATH: Path = (ROOT_DIR / os.getenv(
         "FAISS_META_PATH", "data/embeddings/metadata.json"
-    )
+    )).resolve()
 
     # ── Knowledge Graph ────────────────────────────────────────────────────────
     SIMILARITY_THRESHOLD: float = float(os.getenv("SIMILARITY_THRESHOLD", 0.45))
